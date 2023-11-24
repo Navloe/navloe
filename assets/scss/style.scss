@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/inter.ttf');
+}
+
+body {
+  font-family: 'Inter';
+}
+
+h1, h2, h3, h4, h5, h6, button, input, select {
+  font-family: 'Inter';
+}
+
+input:focus {
+  outline: none !important;
+}
