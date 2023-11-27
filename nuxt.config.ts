@@ -15,5 +15,8 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@vueuse/nuxt",
     "@nuxtjs/eslint-module",
+    "nuxt-icon",
+    "@nuxt/image",
+    "vue3-carousel-nuxt",
   ],
 })

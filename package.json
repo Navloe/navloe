@@ -21,9 +21,15 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@nuxt/eslint-config": "^0.2.0",
+    "@nuxt/image": "^1.1.0",
     "@nuxtjs/eslint-module": "^4.1.0",
     "@nuxtjs/tailwindcss": "^6.8.0",
     "@pinia/nuxt": "^0.5.0",
-    "@vueuse/nuxt": "^10.5.0"
+    "@vueuse/nuxt": "^10.5.0",
+    "flowbite": "^2.2.0",
+    "flowbite-vue": "^0.1.0",
+    "nuxt-icon": "^0.6.6",
+    "vue3-carousel-nuxt": "^1.1.0"
   }
 }

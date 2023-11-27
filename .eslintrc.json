@@ -1,10 +1,12 @@
 {
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
+    "node": true
   },
   "extends": [
     "eslint:recommended",
+    "@nuxt/eslint-config",
     "plugin:@typescript-eslint/recommended",
     "plugin:vue/vue3-essential"
   ],
@@ -18,8 +20,12 @@
     "vue"
   ],
   "rules": {
-    "vue/multi-word-component-names": ["error", {
-      "ignores": ["index", "default"]
-    }]
+    "vue/multi-word-component-names": "off",
+    "vue/html-self-closing": "off",
+    "vue/max-attributes-per-line": "off",
+    "vue/singleline-html-element-content-newline": "off",
+    "vue/attribute-hyphenation": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-useless-escape": "off"
   }
 }
