@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 
 dotenv.config()
 const app = express()
+// ini port 3001
 const port = "3001"
 
 app.use(express.json());
