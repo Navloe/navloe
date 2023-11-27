@@ -14,3 +14,7 @@ h1, h2, h3, h4, h5, h6, button, input, select {
 input:focus {
   outline: none !important;
 }
+
+.form-input{
+  @apply border block border-slate-400 py-2 px-3 mt-2 mb-1 w-full text-sm;
+}
