@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id            String        @id @default(cuid()) @db.VarChar(42)
+  name          String        @db.VarChar(16)
+  email         String        @db.VarChar(64) @unique
+  password      String        @db.VarChar(64)
+  phoneNumber   String        @db.VarChar(16)
+  role          UserRole      @default(umkm)
+  emailVerified Boolean       @default(false)
+  createdAt     DateTime      @default(now()) @db.DateTime()
+  Enterprises   Enterprises[]
+}
+
+enum UserRole {
+  admin
+  umkm
+}
+
+model Categories {
+  id       String         @id @default(cuid()) @db.VarChar(42)
+  name     String         @db.VarChar(36)
+  imageUrl String         @db.Text
+  type     CategoriesType
+}
+
+enum CategoriesType {
+  product
+  service
+}
+
+model Enterprises {
+  id               String           @id @default(cuid()) @db.VarChar(42)
+  user             Users            @relation(fields: [userId], references: [id])
+  userId           String
+  nib              String           @db.VarChar(16) @unique
+  name             String           @db.VarChar(36)
+  uid              String           @db.VarChar(42)
+  type             EnterpriseType
+  categories       Json
+  keywords         String?           @db.Text
+  description      String?           @db.Text
+  shortDescription String?           @db.VarChar(36)
+  logoUrl          String?           @db.VarChar(48)
+  storeUrl         String?           @db.Text
+  status           EnterpriseStatus  @default(pending)
+  inactiveReason   String?          @db.Text
+  updatedAt        DateTime         @default(now()) @db.DateTime()
+  createdAt        DateTime         @default(now()) @db.DateTime()
+  Catalogs         Catalogs[]
+  Reports          Reports[]
+}
+
+enum EnterpriseType {
+  product
+  service
+  both
+}
+
+enum EnterpriseStatus {
+  active
+  inactive
+  pending
+}
+
+model Catalogs {
+  id            String         @id @default(cuid()) @db.VarChar(42)
+  enterprise    Enterprises    @relation(fields: [enterpriseId], references: [id])
+  enterpriseId  String
+  categories    Json
+  name          String         @db.VarChar(120)
+  uid           String         @db.VarChar(124)
+  description   String         @db.Text
+  image1Url     String         @db.VarChar(132)
+  image2Url     String?        @db.VarChar(132)
+  image3Url     String?        @db.VarChar(132)
+  catalogUrl    String         @db.Text
+  type          CategoriesType
+  keywords      String         @db.Text
+  status        CatalogStatus
+  suspendReason String?        @db.Text
+  updatedAt     DateTime       @default(now()) @db.DateTime()
+  createdAt     DateTime       @default(now()) @db.DateTime()
+  Reports       Reports[]
+}
+
+enum CatalogStatus {
+  show
+  hidden
+  suspend
+}
+
+model ReportTypes {
+  id         String    @id @default(cuid()) @db.VarChar(42)
+  reportType String    @db.VarChar(48)
+  Report     Reports[]
+}
+
+model Reports {
+  id           String       @id @default(cuid()) @db.VarChar(42)
+  Enterprise   Enterprises  @relation(fields: [enterpriseId], references: [id])
+  enterpriseId String
+  Catalog      Catalogs?    @relation(fields: [catalogId], references: [id])
+  catalogId    String?
+  ReportType   ReportTypes  @relation(fields: [reportTypeId], references: [id])
+  reportTypeId String
+  message      String       @db.Text
+  ipAddress    String       @db.VarChar(18)
+  status       ReportStatus
+  createdAt    DateTime     @default(now()) @db.DateTime()
+}
+
+enum ReportStatus {
+  pending
+  solved
+  rejected
+}
+
+model Settings {
+  id    String @id @default(cuid()) @db.VarChar(42)
+  name  String @unique @db.VarChar(24)
+  value String @db.Text
+}
