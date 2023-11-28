@@ -11,6 +11,10 @@ router.post('/auth/login', auth.login);
 router.post('/auth/register', auth.register);
 
 router.get('/admin/users', adminMiddleware, users.get);
+router.get('/admin/user/:id', users.detailUser);
+router.put('/admin/user/:id', users.updateUser);
+router.delete('/admin/user/:id', users.deleteUser);
+
 
 router.get('/admin/categories', categories.get);
 router.get('/admin/category/:id', categories.detail);
