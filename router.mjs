@@ -13,8 +13,9 @@ router.post('/auth/register', auth.register);
 router.get('/admin/users', adminMiddleware, users.get);
 
 router.get('/admin/categories', categories.get);
-router.post('/admin/categories', categories.post);
-router.get('/admin/categories/:id', categories.getById);
-router.put('/admin/categories/:id', categories.put);
+router.get('/admin/category/:id', categories.detail);
+router.post('/admin/category', categories.create);
+router.put('/admin/category/:id', categories.update);
+router.delete('/admin/category/:id', categories.delete);
 
 export default router;
