@@ -87,7 +87,6 @@ export default {
         nib: yup.string().required(),
         enterpriseName: yup.string().required(),
         enterpriseType: yup.string().oneOf(['product', 'service', 'both']),
-        enterpriseCategories: yup.string().required(),
       });
 
       const validate = await validator(schema, req.body);
@@ -98,7 +97,7 @@ export default {
         });
       }
 
-      const {name, email, phoneNumber, password, nib, enterpriseName, enterpriseType, enterpriseCategories} = req.body;
+      const {name, email, phoneNumber, password, nib, enterpriseName, enterpriseType} = req.body;
 
       const findAccount = await prisma.users.findFirst({
         select: {
@@ -156,7 +155,6 @@ export default {
           name: enterpriseName,
           uid: enterpriseUID,
           type: enterpriseType,
-          categories: enterpriseCategories,
         }
       })
       

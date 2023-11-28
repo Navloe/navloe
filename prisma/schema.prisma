@@ -47,7 +47,7 @@ model Enterprises {
   name             String           @db.VarChar(36)
   uid              String           @db.VarChar(42)
   type             EnterpriseType
-  categories       Json
+  categories       Json?
   keywords         String?           @db.Text
   description      String?           @db.Text
   shortDescription String?           @db.VarChar(36)
