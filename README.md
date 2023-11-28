@@ -7,17 +7,22 @@
 pnpm i
 ```
 
-### step 2: create database
+### step 2: generate prisma
+```terminal
+npx prisma generate
+```
+
+### step 3: create database
 ```terminal
 npx prisma db push
 ```
 
-### step 3: seeding data
+### step 4: seeding data
 ```terminal
 npx prisma db seed
 ```
 
-### step 4: run project
+### step 5: run project
 ```terminal
 pnpm dev
 ```
