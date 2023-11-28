@@ -4,6 +4,7 @@ import umkmMiddleware from "./middleware/umkm.middleware.mjs";
 import adminMiddleware from "./middleware/admin.middleware.mjs";
 import users from "./controller/admin/users.mjs";
 import categories from "./controller/admin/categories.mjs";
+import enterprises from "./controller/admin/enterprises.mjs";
 
 const router = Router()
 
@@ -21,5 +22,11 @@ router.get('/admin/category/:id', categories.detail);
 router.post('/admin/category', categories.create);
 router.put('/admin/category/:id', categories.update);
 router.delete('/admin/category/:id', categories.delete);
+
+
+router.get('/admin/enterprises', enterprises.getEnterprises);
+router.get('/admin/enterprise/:id', enterprises.getDetailEnterprise)
+router.put('/admin/enterprise/:id', enterprises.updateEnterprise)
+router.delete('/admin/enterprise/:id', enterprises.deleteEnterprise)
 
 export default router;
