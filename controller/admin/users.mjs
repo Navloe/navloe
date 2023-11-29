@@ -41,7 +41,7 @@ export default {
       
       if(!user){
         return res.status(404).json({ 
-        message: 'Category not found' 
+          message: 'Category not found' 
         });
       }
 
