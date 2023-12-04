@@ -13,38 +13,10 @@ export default{
   getEnterprises: async (req,res) => {
     try{
       const enterprises = await prisma.enterprises.findMany({
-        select: {
-          id: true,
-          userId: true,
-          nib: true,
-          name: true,
-          uid: true,
-          type: true,
-          categories: true,
-          keywords: true,
-          description: true,
-          shortDescription: true,
-          logoUrl: true,
-          storeUrl: true,
-          status: true,
-          // users:{
-          //   select:{
-          //     name: true,
-          //     email: true
-          //   }
-          // }
-        }
+        // where:{status: "active"},
+        include: {user : true},
       })
 
-      // const user = await prisma.users.findUnique({
-      //   select: {
-      //     name: true,
-      //     email: true,
-      //   },
-      //   where: {
-      //     id,
-      //   }
-      // })
 
       return res.json(enterprises)
       // return res.json(user)
@@ -65,6 +37,7 @@ export default{
     try{
       const enterprise = await prisma.enterprises.findFirst({
         where:{id},
+        include: {user : true},
       })
 
       if(!enterprise){

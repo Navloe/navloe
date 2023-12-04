@@ -111,7 +111,7 @@ export default{
   createCatalog: async (req,res) => {
     try{
       const schema = yup.object({
-        categories: yup.string().required(),
+        categories: yup.json().required(),
         name: yup.string().required(),
         uid: yup.string().required(),
         description: yup.string().required(),
