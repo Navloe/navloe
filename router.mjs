@@ -6,6 +6,8 @@ import users from "./controller/admin/users.mjs";
 import categories from "./controller/admin/categories.mjs";
 import enterprises from "./controller/admin/enterprises.mjs";
 import catalogs from "./controller/user/catalogs.mjs";
+import report from "./controller/report.mjs";
+
 
 const router = Router()
 
@@ -31,11 +33,18 @@ router.put('/admin/enterprise/:id', enterprises.updateEnterprise);
 router.delete('/admin/enterprise/:id', enterprises.deleteEnterprise);
 
 
-router.get('/user/catalogs', catalogs.getCatalogs);
-router.get('/user/catalog/:id', catalogs.getDetailCatalog);
-router.post('/user/catalog', catalogs.createCatalog);
-router.put('/user/catalog/:id', catalogs.updateCatalog);
-router.delete('/user/catalog/:id', catalogs.deleteCatalog);
+router.post('/reportType', report.createReportType),
+router.post('/report', report.createReport);
+
+router.get('/admin/report', report.adminGetReport);
+router.put('/admin/report/:id', report.adminEditReport);
+
+
+router.get('/dashboard/catalogs', catalogs.getCatalogs);
+router.get('/dashboard/catalog/:id', catalogs.getDetailCatalog);
+router.post('/dashboard/catalog', catalogs.createCatalog);
+router.put('/dashboard/catalog/:id', catalogs.updateCatalog);
+router.delete('/dashboard/catalog/:id', catalogs.deleteCatalog);
 
 
 export default router;
