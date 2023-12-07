@@ -9,6 +9,7 @@ const router = Router()
 
 router.post('/auth/login', auth.login);
 router.post('/auth/register', auth.register);
+router.get('/auth/whoami', auth.whoami);
 
 router.get('/admin/users', adminMiddleware, users.get);
 

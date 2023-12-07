@@ -56,7 +56,7 @@ export default {
 
       const token = await jwt.sign({
         id: findAccount.id,
-        role: findAccount.role
+        role: findAccount.role,
       }, process.env.JWT_UMKM_SECRET, {
         expiresIn: '30d',
         audience: 'client',
@@ -165,4 +165,30 @@ export default {
       return res.INTERNAL_SERVER_ERROR();
     }
   },
+
+  /**
+   * 
+   * @param {import('express').Request} req 
+   * @param {import('express').Response} res 
+   */
+  whoami: async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    try {
+      jwt.verify(token, process.env.JWT_UMKM_SECRET, async function(err, decodedToken) {
+        if(!err) {
+          const { id, role } = decodedToken
+          const user = await prisma.users.findFirst({where: {id}})
+          return res.json({
+            id, 
+            role,
+            name: user.name,
+          })
+        } else {
+          return res.INTERNAL_SERVER_ERROR()
+        }
+      });
+    } catch (error) {
+      return res.INTERNAL_SERVER_ERROR()
+    }
+  }
 }
