@@ -61,5 +61,52 @@ export default{
       console.error(error);
       return res.INTERNAL_SERVER_ERORR()
     }
+  },
+
+  adminGetReport: async (req,res) => {
+    try{
+      const reports = await prisma.reports.findMany({
+        include:{
+          Enterprise : true,
+          Catalog: true,
+          reportType: true
+        }
+      })
+      return res.json(reports)
+    }catch(error){
+      return res.INTERNAL_SERVER_ERORR()
+    }
+  },
+
+
+  adminEditReport: async (req,res) => {
+    const {message, status} = req.body;
+    const{id} = req.params;
+
+    try{
+      const oldReport = await prisma.reports.findFirst({
+        where:{id},
+      });
+
+      if(!oldReport){
+        return res.status(404).json({
+          message:'Report not found'
+        })
+      }
+
+      const updateReport = await prisma.reports.update({
+        where:{id},
+        data:{
+          message: message || oldReport.message,
+          status: status || oldReport.status
+        }
+      });
+
+      return res.status(200).json({
+        message:'Report have been updated'
+      })
+    }catch(error){
+      return res.INTERNAL_SERVER_ERORR()
+    }
   }
 }

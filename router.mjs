@@ -6,10 +6,13 @@ import users from "./controller/admin/users.mjs";
 import categories from "./controller/admin/categories.mjs";
 import enterprises from "./controller/admin/enterprises.mjs";
 import catalogs from "./controller/user/catalogs.mjs";
-import report from "./controller/report.mjs";
+import report from "./controller/Report.mjs";
+import landingPage from "./controller/landingPage.mjs";
 
 
 const router = Router()
+
+router.get('/', landingPage.getLandingPage);
 
 router.post('/auth/login', auth.login);
 router.post('/auth/register', auth.register);

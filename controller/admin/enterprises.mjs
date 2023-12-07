@@ -12,11 +12,37 @@ export default{
 
   getEnterprises: async (req,res) => {
     try{
-      const enterprises = await prisma.enterprises.findMany({
-        // where:{status: "active"},
-        include: {user : true},
-      })
+      // const enterprises = await prisma.enterprises.findMany({
+      //   include: {user : true},
+      // })
 
+      const enterprises = await prisma.enterprises.findMany({
+        // include: {
+        //   user: {
+        //     select: {
+        //       name: true,
+        //       email: true,
+        //       phoneNumber: true,
+        //       emailVerified: true
+        //     }
+        //   }
+        // },
+        select: {
+          nib: true,
+          name: true,
+          uid: true,
+          categories: true,
+          keywords: true,
+          description: true,
+          shortDescription: true,
+          logoUrl: true,
+          storeUrl: true,
+          status: true,
+          inactiveReason: true,
+          user: true // Menambahkan relasi user
+        }
+      });
+      // console.log(error);
 
       return res.json(enterprises)
       // return res.json(user)

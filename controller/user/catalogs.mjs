@@ -111,7 +111,8 @@ export default{
   createCatalog: async (req,res) => {
     try{
       const schema = yup.object({
-        categories: yup.json().required(),
+        enterpriseId: yup.string().required(),
+        categories: yup.string().required(),
         name: yup.string().required(),
         uid: yup.string().required(),
         description: yup.string().required(),
@@ -121,6 +122,7 @@ export default{
         catalogUrl: yup.string().required(),
         type: yup.string().required().oneOf(['product', 'service']),
         keywords: yup.string().required(),
+        status: yup.string().required().oneOf(['show', 'hidden','suspend']),
       })
 
       const validate = await validator(schema, req.body);
@@ -130,11 +132,12 @@ export default{
           errors: validate.errors
         })
       }
-      const{categories, name, uid, description,image1Url,image2Url,image3Url,catalogUrl, type, keywords} = req.body;
+      const{enterpriseId, categories, name, uid, description,image1Url,image2Url,image3Url,catalogUrl, type, keywords, status} = req.body;
 
       await prisma.catalogs.create({
         data:{
-          categories: categories,
+          enterpriseId: enterpriseId,
+          categories: categories.toString(),
           name: name,
           uid: uid,
           description: description,
@@ -142,8 +145,9 @@ export default{
           image2Url: image2Url,
           image3Url: image3Url,
           catalogUrl: catalogUrl,
+          keywords: keywords,
           type: type,
-          keywords: keywords
+          status: status
         }
       })
 
