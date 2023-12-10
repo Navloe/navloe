@@ -8,7 +8,6 @@ import enterprises from "./controller/admin/enterprises.mjs";
 import catalogs from "./controller/user/catalogs.mjs";
 import report from "./controller/Report.mjs";
 import landingPage from "./controller/landingPage.mjs";
-import settings from "./controller/admin/settings.mjs";
 
 
 const router = Router()
@@ -17,6 +16,7 @@ router.get('/', landingPage.getLandingPage);
 
 router.post('/auth/login', auth.login);
 router.post('/auth/register', auth.register);
+router.get('/auth/whoami', auth.whoami);
 
 router.get('/admin/users', adminMiddleware, users.get);
 router.get('/admin/user/:id', users.detailUser);

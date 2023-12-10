@@ -71,6 +71,7 @@ enum EnterpriseStatus {
   active
   inactive
   pending
+  rejected
 }
 
 model Catalogs {

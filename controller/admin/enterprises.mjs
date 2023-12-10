@@ -1,6 +1,6 @@
 import yup from "yup";
-import { PrismaClient } from "@prisma/client";
 import validator from "../../helpers/validator.mjs";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default{
@@ -12,22 +12,17 @@ export default{
 
   getEnterprises: async (req,res) => {
     try{
-      // const enterprises = await prisma.enterprises.findMany({
-      //   include: {user : true},
-      // })
+      const status = req.query.status ?? ''
+      const type = req.query.type ?? []
+      const page = parseInt(req.query.page ?? 1 )
+      const limitPerPage = parseInt(req.query.limit ?? 10 )
+      const searchKeyword = req.query.searchKeyword ?? null
 
-      const enterprises = await prisma.enterprises.findMany({
-        // include: {
-        //   user: {
-        //     select: {
-        //       name: true,
-        //       email: true,
-        //       phoneNumber: true,
-        //       emailVerified: true
-        //     }
-        //   }
-        // },
+      const allStatus = status.split(',');
+
+      const allEnterprises = await prisma.enterprises.findMany({
         select: {
+          id: true,
           nib: true,
           name: true,
           uid: true,
@@ -38,14 +33,98 @@ export default{
           logoUrl: true,
           storeUrl: true,
           status: true,
+          type: true,
           inactiveReason: true,
-          user: true // Menambahkan relasi user
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              phoneNumber: true
+            }
+          }
+        },
+        where: {
+          OR:[
+            // ...allStatus,
+            { nib: { contains: searchKeyword ?? '' } },
+            { name: { contains: searchKeyword ?? '' } },
+            { description: { contains: searchKeyword ?? '' } },
+            { shortDescription: { contains: searchKeyword ?? '' } },
+            { user: { name: { contains: searchKeyword ?? '' } } },
+          ],
+          AND: [
+            !!status ? { status: { in: allStatus } } : { status: { in: ["active", "inactive", "pending", "rejected"] } },
+            { type: type.length > 0 ? { equals: type } : { in: ["product", "service", "both"] }},
+          ]
         }
+        
       });
-      // console.log(error);
 
-      return res.json(enterprises)
-      // return res.json(user)
+      const totalPage = Math.ceil(allEnterprises.length / limitPerPage);
+
+      if (allEnterprises.length > 0 && page > totalPage) {
+        return res.status(404).json({ 
+          message: "Page numbering out of bounds" 
+        })
+      }
+      
+      const paginatedEnterprises = await prisma.enterprises.findMany({
+        select: {
+          id: true,
+          nib: true,
+          name: true,
+          uid: true,
+          categories: true,
+          keywords: true,
+          description: true,
+          shortDescription: true,
+          logoUrl: true,
+          storeUrl: true,
+          status: true,
+          type: true,
+          inactiveReason: true,
+          createdAt: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              phoneNumber: true
+            }
+          }
+        },
+        where: {
+          OR:[
+            // ...allStatus,
+            { nib: { contains: searchKeyword ?? '' } },
+            { name: { contains: searchKeyword ?? '' } },
+            { description: { contains: searchKeyword ?? '' } },
+            { shortDescription: { contains: searchKeyword ?? '' } },
+            { user: { name: { contains: searchKeyword ?? '' } } },
+          ],
+          AND: [
+            !!status ? { status: { in: allStatus } } : { status: { in: ["active", "inactive", "pending"] } },
+            { type: type.length > 0 ? { equals: type } : { in: ["product", "service", "both"] }},
+          ]
+        },
+        skip: limitPerPage * (page - 1),
+        take: limitPerPage,
+        
+      });
+
+      return res.json({
+        data: paginatedEnterprises,
+        pagination: {
+          currentPage: page,
+          limitPerPage,
+          totalPage,
+          displayedData: paginatedEnterprises.length,
+          totalData: allEnterprises.length,
+        },
+        skip: limitPerPage * (page - 1),
+        take: limitPerPage,
+      });
     }catch(error){
       return res.INTERNAL_SERVER_ERROR()
     }
@@ -56,7 +135,6 @@ export default{
    * @param {import('express').Request} req 
    * @param {import('express').Response} res 
   */
-
   getDetailEnterprise: async(req,res) => {
     const{id} = req.params
 
@@ -85,7 +163,7 @@ export default{
    * @param {import('express').Response} res 
   */
   updateEnterprise: async (req,res) => {
-    const{nib, name, type, categories, keywords, description, shortDescription, logoUrl, storeUrl, status} = req.body;
+    const{nib, name, type, categories, keywords, description, shortDescription, logoUrl, storeUrl, status, inactiveReason} = req.body;
     const{id} = req.params
 
     try {
@@ -98,9 +176,10 @@ export default{
           message: 'Enterprise not found'
         })
       }
-      const updatedEnterprise = await prisma.enterprises.update({
+      await prisma.enterprises.update({
         where:{id},
         data:{
+          nib: nib || oldEnterprise.nib,
           name: name || oldEnterprise.name,
           type: type || oldEnterprise.type,
           categories: categories || oldEnterprise.categories,
@@ -109,7 +188,8 @@ export default{
           shortDescription: shortDescription || oldEnterprise.shortDescription,
           logoUrl: logoUrl  || oldEnterprise.logoUrl,
           storeUrl: storeUrl || oldEnterprise.storeUrl,
-          status: status || oldEnterprise.status
+          status: status || oldEnterprise.status,
+          inactiveReason: inactiveReason || oldEnterprise.inactiveReason,
         }
       })
 
