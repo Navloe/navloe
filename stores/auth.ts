@@ -5,7 +5,7 @@ export const useMyAuthStore = defineStore({
   state: () => ({ }),
   actions: {
     async login(){
-      console.log("ea");
+      
     }
   },
 })

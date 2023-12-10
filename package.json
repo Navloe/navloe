@@ -27,9 +27,11 @@
     "@nuxtjs/tailwindcss": "^6.8.0",
     "@pinia/nuxt": "^0.5.0",
     "@vueuse/nuxt": "^10.5.0",
+    "axios": "^1.6.2",
     "flowbite": "^2.2.0",
     "flowbite-vue": "^0.1.0",
     "nuxt-icon": "^0.6.6",
+    "sweetalert2": "^11.10.1",
     "vue3-carousel-nuxt": "^1.1.0"
   }
 }

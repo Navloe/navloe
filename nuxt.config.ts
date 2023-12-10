@@ -1,11 +1,18 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// const apiBaseUrl= process.env.API_BASE_URL;
+const apiBaseUrl= 'http://localhost:3001/';
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  runtimeConfig: {
+    public: {
+      apiBaseUrl
+    }
+  },
   app: {
     head: {
       title: 'Navloe',
       link: [
-        { rel: 'favicon', type: 'image/png', href: '/navloeLogo.png' }
+        { rel: 'icon', type: 'image/png', href: "/images/icons/icon-144.png" }
       ],
     }
   },

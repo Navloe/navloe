@@ -18,3 +18,7 @@ input:focus {
 .form-input{
   @apply border block border-slate-400 py-2 px-3 mt-2 mb-1 w-full text-sm;
 }
+
+.btn{
+  @apply py-2 px-4 border-0 rounded;
+}
