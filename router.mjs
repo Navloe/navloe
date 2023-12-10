@@ -8,6 +8,7 @@ import enterprises from "./controller/admin/enterprises.mjs";
 import catalogs from "./controller/user/catalogs.mjs";
 import report from "./controller/Report.mjs";
 import landingPage from "./controller/landingPage.mjs";
+import settings from "./controller/admin/settings.mjs";
 
 
 const router = Router()
@@ -49,5 +50,8 @@ router.post('/dashboard/catalog', catalogs.createCatalog);
 router.put('/dashboard/catalog/:id', catalogs.updateCatalog);
 router.delete('/dashboard/catalog/:id', catalogs.deleteCatalog);
 
+
+router.get('/admin/settings', settings.getSettings);
+router.get('/admin/setting/:id', settings.getDetailSetting);
 
 export default router;
