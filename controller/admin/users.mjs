@@ -5,9 +5,18 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default {
+  /**
+   * 
+   * @param {import('express').Request} req 
+   * @param {import('express').Response} res 
+   */
   get: async (req, res) => {
     try {
-      const users = await prisma.users.findMany({
+      const page = parseInt(req.query.page ?? 1 );
+      const limitPerPage = parseInt(req.query.limit ?? 10 );
+      const searchKeyword = req.query.searchKeyword ?? null;
+
+      const allUsers = await prisma.users.findMany({
         select: {
           id: true,
           name: true,
@@ -16,10 +25,55 @@ export default {
           emailVerified: true,
           role: true,
           createdAt: true,
-        }
+        },
+        where: {
+          OR: [
+              { name: { contains: searchKeyword ?? '' } },
+              { email: { contains: searchKeyword ?? '' } },
+              { phoneNumber: { contains: searchKeyword ?? '' } }
+          ].filter(Boolean),
+        },
       })
 
-      return res.json(users)
+      const totalPage = Math.ceil(allUsers.length / limitPerPage);
+
+      if (allUsers.length > 0 && page > totalPage) {
+        return res.status(404).json({ 
+          message: "Page numbering out of bounds" 
+        })
+      }
+
+      const paginatedUsers = await prisma.users.findMany({
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phoneNumber: true,
+          emailVerified: true,
+          role: true,
+          createdAt: true,
+        },
+        where: {
+          OR: [
+            { name: { contains: searchKeyword ?? '' } },
+            { email: { contains: searchKeyword ?? '' } },
+            { phoneNumber: { contains: searchKeyword ?? '' } }
+          ].filter(Boolean),
+        },
+        skip: limitPerPage * (page - 1),
+        take: limitPerPage,
+      })
+
+      return res.json({
+        data: paginatedUsers,
+        pagination: {
+          currentPage: page,
+          limitPerPage,
+          totalPage,
+          displayedData: paginatedUsers.length,
+          totalData: allUsers.length,
+        }
+      });
     } catch (error) {
       console.error(error);
       return res.INTERNAL_SERVER_ERROR()
