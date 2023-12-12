@@ -44,8 +44,8 @@
   import { ref, onMounted } from "vue";
   import { FwbSpinner } from "flowbite-vue";
 
-  const email = ref("cagieeeee@gmail.com");
-  const password = ref("");
+  const email = ref("cagiemustikaa@gmail.com");
+  const password = ref("123123123");
   const emailMessage = ref("");
   const isLoading = ref(false);
   const toasts = ref([{}]);
@@ -60,19 +60,38 @@
       emailMessage.value = "Email tidak valid!";
     } else {
       isLoading.value = true
+      await login()
+      isLoading.value = false
 
-      if (password.value == "123") {
-        toasts.value.push({
-          type: "success",
-          message: "Login berhasil!"
-        });    
-      } else {
-        toasts.value.push({
-          type: "danger",
-          message: "Email atau Password salah!"
-        });
-        isLoading.value = false
+    }
+  }
+
+  const login = async () => {
+    try {
+      const req = await useAxios.post('/auth/login', {
+        email: email.value,
+        password: password.value
+      })
+        
+      useTokenStore().setToken(req.data.token);
+      
+      toasts.value.push({
+        type: "success",
+        message: "Login berhasil!"
+      });    
+
+      const user = await useAxios.get('/auth/whoami')
+      const {umkmInformationFilled, umkmStatusActived} = user.data
+
+      if (!umkmStatusActived) {
+        navigateTo('/auth/daftar-umkm')
       }
+
+    } catch (error: any) {
+      toasts.value.push({
+        type: "danger",
+        message: error.response.data.error
+      });
     }
   }
   

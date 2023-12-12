@@ -2,11 +2,14 @@
   <div>
     <h1 class="mb-2 font-bold text-xl">Pengajuan UMKM</h1>
     <div class="sm:flex my-4 justify-between">
-      <fwb-select
-        v-model="selectedStatus"
-        :options="statusList"
-        class="max-sm:block max-sm:mb-4"
-      />
+      <div class="flex gap-2">
+        <fwb-select
+          v-model="selectedStatus"
+          :options="statusList"
+          class="max-sm:block max-sm:mb-4"
+        />
+        <button class="btn bg-blue-500 text-white text-xs h-10" @click="loadData()">Reload Data</button>
+      </div>
       <fwb-input
         v-model="searchKeyword"
         placeholder="Pencarian"
@@ -41,7 +44,7 @@
             <a href="https://www.badanperizinan.co.id/nib.html" target="_blank" class="text-primary underline text-xs">Cek disini</a>
           </fwb-table-cell>
           <fwb-table-cell><b>{{ data.user.name }}</b> <br /> <small>{{ data.user.phoneNumber }}</small> <br /> <small>{{ data.user.email }}</small></fwb-table-cell>
-          <fwb-table-cell>{{ data.createdAt }}</fwb-table-cell>
+          <fwb-table-cell>{{ useDateFormat(data.createdAt, 'DD-MM-YYYY HH:mm:ss').value }}</fwb-table-cell>
           <fwb-table-cell>
             <fwb-badge :type="data.status == 'pending' ? 'yellow' : 'red'" class="capitalize">{{ data.status }}</fwb-badge>
           </fwb-table-cell>
@@ -113,6 +116,8 @@ import Swal from 'sweetalert2';
   watch(() => selectedStatus.value, () => searchData())
   
   const loadData = async () => {
+    isLoading.value = true
+    datas.value = null
     const req = await useAxios.get(`/admin/enterprises?status=${selectedStatus.value}&page=${pagination.value.currentPage}&limit=${pagination.value.limitPerPage}&searchKeyword=${searchKeyword.value}`)
     datas.value = req.data.data
     pagination.value = req.data.pagination
@@ -217,6 +222,13 @@ import Swal from 'sweetalert2';
       }
     }
   }
+
+  // const getDate = (date: string) => {
+  //   const result = useDateFormat(date, 'DD-MM-YYYY HH:mm:ss').value
+  //   console.log(result.value);
+    
+  //   return result
+  // }
 </script>
 
 <style>

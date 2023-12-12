@@ -1,0 +1,3 @@
+interface Catalog{
+  name: string
+}

@@ -2,11 +2,14 @@
   <div>
     <h1 class="mb-2 font-bold text-xl">UMKM</h1>
     <div class="sm:flex my-4 justify-between">
-      <fwb-select
-        v-model="selectedType"
-        :options="typeList"
-        class="max-sm:block max-sm:mb-4"
-      />
+      <div class="flex gap-2">
+        <fwb-select
+          v-model="selectedType"
+          :options="typeList"
+          class="max-sm:block max-sm:mb-4"
+        />
+        <button class="btn bg-blue-500 text-white text-xs h-10" @click="loadData()">Reload Data</button>
+      </div>
       <fwb-input
         v-model="searchKeyword"
         placeholder="Pencarian"
@@ -104,6 +107,8 @@
   watch(() => selectedType.value, () => searchData())
 
   const loadData = async () => {
+    isLoading.value = true
+    datas.value = null
     const req = await useAxios.get(`/admin/enterprises?type=${selectedType.value == 'all' ? '' : selectedType.value}&page=${pagination.value.currentPage}&limit=${pagination.value.limitPerPage}&searchKeyword=${searchKeyword.value}&status=active`)
     datas.value = req.data.data
     pagination.value = req.data.pagination
