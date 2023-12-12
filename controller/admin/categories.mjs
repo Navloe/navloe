@@ -1,8 +1,16 @@
 import yup from "yup";
 import { PrismaClient } from "@prisma/client";
 import validator from "../../helpers/validator.mjs";
+import cloudinary from '../../config/cloudinaryConfig.mjs';
 // import { CategoriesType } from "@prisma/client";
 const prisma = new PrismaClient();
+
+// import fileUpload from 'express-fileupload';
+
+// app.use(fileUpload({ useTempFiles: true }));
+
+// import multer from 'multer';
+// const upload = multer({ dest: 'uploads/' });
 
 export default {
   
@@ -95,30 +103,38 @@ export default {
    * @param {import('express').Response} res 
   */
   create: async (req, res) => {
+
     try{
-      const schema = yup.object({
-        name: yup.string().required(),
-        imageUrl: yup.string().required(),
-        type: yup.string().required().oneOf(['product', 'service'])
-      });
+      // const schema = yup.object({
+      //   name: yup.string().required(),
+      //   imageUrl: yup.string().required(),
+      //   type: yup.string().required().oneOf(['product', 'service'])
+      // });
 
-      const validate = await validator(schema, req.body);
+      // const validate = await validator(schema, req.body);
 
-      if (validate.errors) {
-        return res.status(400).json({
-          errors: validate.errors,
-        });
-      }
+      // if (validate.errors) {
+      //   return res.status(400).json({
+      //     errors: validate.errors,
+      //   });
+      // }
     
       const { name, imageUrl, type } = req.body;
-            
+      const result = await cloudinary.uploader.upload(imageUrl, {
+        folder: "categories",
+      });
+      const fotoUrl = result.secure_url;
+
+      // const imageUrl = req.file.path;
+
       await prisma.categories.create({
         data: {
           name : name,
-          imageUrl : imageUrl,
+          imageUrl : fotoUrl,
           type : type
         }
       })
+      
 
       return res.status(200).json({
         message: "Category created successful"
