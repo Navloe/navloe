@@ -119,19 +119,19 @@ export default {
       //   });
       // }
     
-      const { name, imageUrl, type } = req.body;
-      const result = await cloudinary.uploader.upload(imageUrl, {
+      const { name, type } = req.body;
+      const base64String = req.file.buffer.toString('base64');
+      const result = await cloudinary.uploader.upload(`data:image/png;base64,${base64String}`, {
         folder: "categories",
+        public_id: req.file.filename
       });
-      const fotoUrl = result.secure_url;
-
-      // const imageUrl = req.file.path;
+      const imageUrl = result.secure_url;
 
       await prisma.categories.create({
         data: {
-          name : name,
-          imageUrl : fotoUrl,
-          type : type
+          name,
+          imageUrl,
+          type
         }
       })
       

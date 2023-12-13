@@ -10,9 +10,12 @@ import catalogs from "./controller/user/catalogs.mjs";
 import report from "./controller/Report.mjs";
 import landingPage from "./controller/landingPage.mjs";
 import settings from "./controller/admin/settings.mjs";
+import multer from "multer";
 
 
 const router = Router()
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // PUBLIC AREA
 router.post('/report', report.createReport);
@@ -41,7 +44,7 @@ router.delete('/admin/user/:id', adminMiddleware, users.deleteUser);
 
 router.get('/admin/categories', adminMiddleware, categories.get);
 router.get('/admin/category/:id', adminMiddleware, categories.detail);
-router.post('/admin/category', adminMiddleware, categories.create);
+router.post('/admin/category', upload.single('imageUrl'), adminMiddleware, categories.create);
 router.put('/admin/category/:id', adminMiddleware, categories.update);
 router.delete('/admin/category/:id', adminMiddleware, categories.delete);
 
