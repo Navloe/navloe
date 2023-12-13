@@ -8,7 +8,8 @@ import adminEnterprises from "./controller/admin/enterprises.mjs";
 import userEnterprises from "./controller/user/enterprises.mjs";
 import catalogs from "./controller/user/catalogs.mjs";
 import report from "./controller/Report.mjs";
-// import landingPage from "./controller/landingPage.mjs";
+import landingPage from "./controller/landingPage.mjs";
+import settings from "./controller/admin/settings.mjs";
 
 
 const router = Router()
@@ -52,5 +53,11 @@ router.delete('/admin/enterprise/:id', adminMiddleware, adminEnterprises.deleteE
 router.get('/admin/report', adminMiddleware, report.adminGetReport);
 router.put('/admin/report/:id', adminMiddleware, report.adminEditReport);
 router.post('/admin/reportType', adminMiddleware, report.createReportType);
+
+router.get('/admin/settings', settings.getSettings);
+router.get('/admin/setting/:id', settings.getDetailSetting);
+router.post('/admin/setting', settings.postSetting);
+router.put('/admin/setting/:id', settings.editSetting);
+router.delete('/admin/setting/:id', settings.deleteSetting);
 
 export default router;
