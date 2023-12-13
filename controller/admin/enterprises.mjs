@@ -75,6 +75,7 @@ export default{
           nib: true,
           name: true,
           uid: true,
+          userId: true,
           categories: true,
           keywords: true,
           description: true,
@@ -84,6 +85,7 @@ export default{
           status: true,
           type: true,
           inactiveReason: true,
+          updatedAt: true,
           createdAt: true,
           user: {
             select: {

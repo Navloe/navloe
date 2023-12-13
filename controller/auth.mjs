@@ -178,10 +178,31 @@ export default {
         if(!err) {
           const { id, role } = decodedToken
           const user = await prisma.users.findFirst({where: {id}})
+          if(!user){
+            return res.json({
+              error: 'User not found!'
+            })
+          }
+
+          const umkm = await prisma.enterprises.findFirst({ where: { userId: user.id } })
+          if(!umkm && user.role == 'umkm'){
+            return res.json({
+              error: 'UMKM not found!'
+            })
+          }
+
+          let umkmInformationFilled = null
+          let umkmStatusActived = null
+          if (umkm) {
+            umkmStatusActived = umkm.status == 'active'
+            umkmInformationFilled = !!umkm.description
+          }
           return res.json({
             id, 
             role,
             name: user.name,
+            umkmStatusActived,
+            umkmInformationFilled
           })
         } else {
           return res.INTERNAL_SERVER_ERROR()
