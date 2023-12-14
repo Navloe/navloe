@@ -11,6 +11,7 @@ import report from "./controller/Report.mjs";
 import landingPage from "./controller/landingPage.mjs";
 import settings from "./controller/admin/settings.mjs";
 import multer from "multer";
+import settingProfil from "./controller/user/settingProfil.mjs";
 
 
 const router = Router()
@@ -24,6 +25,8 @@ router.post('/auth/login', auth.login);
 router.post('/auth/register', auth.register);
 router.get('/auth/whoami', auth.whoami);
 
+router.get('/', landingPage.getLandingPage);
+
 // USER AREA
 router.get('/user/enterprise', umkmMiddleware, userEnterprises.getEnterprise);
 router.put('/user/enterprise', umkmMiddleware, userEnterprises.updateEnterprise);
@@ -34,7 +37,9 @@ router.post('/user/catalog', catalogs.createCatalog);
 router.put('/user/catalog/:id', catalogs.updateCatalog);
 router.delete('/user/catalog/:id', catalogs.deleteCatalog);
 
-// router.get('/', landingPage.getLandingPage);
+router.get('/user/userSetting/:id', settingProfil.getUserSetting);
+router.put('/user/userSetting/:id', settingProfil.editUserSetting);
+
 
 // ADMIN AREA
 router.get('/admin/users', adminMiddleware, users.get);
