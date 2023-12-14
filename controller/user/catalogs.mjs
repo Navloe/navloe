@@ -178,7 +178,7 @@ export default{
       })
 
       return res.status(200).json({
-        message: 'Catalog has been deletes'
+        message: 'Catalog has been deleted'
       })
 
     }catch(error){

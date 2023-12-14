@@ -7,11 +7,13 @@ import categories from "./controller/admin/categories.mjs";
 import adminEnterprises from "./controller/admin/enterprises.mjs";
 import userEnterprises from "./controller/user/enterprises.mjs";
 import catalogs from "./controller/user/catalogs.mjs";
-import report from "./controller/Report.mjs";
+import report from "./controller/report.mjs";
 import landingPage from "./controller/landingPage.mjs";
 import settings from "./controller/admin/settings.mjs";
 import multer from "multer";
 import settingProfil from "./controller/user/settingProfil.mjs";
+import reportType from "./controller/admin/reportType.mjs";
+import reports from "./controller/admin/reports.mjs";
 
 
 const router = Router()
@@ -58,9 +60,15 @@ router.get('/admin/enterprise/:id', adminMiddleware, adminEnterprises.getDetailE
 router.put('/admin/enterprise/:id', adminMiddleware, adminEnterprises.updateEnterprise);
 router.delete('/admin/enterprise/:id', adminMiddleware, adminEnterprises.deleteEnterprise);
 
-router.get('/admin/report', adminMiddleware, report.adminGetReport);
-router.put('/admin/report/:id', adminMiddleware, report.adminEditReport);
-router.post('/admin/reportType', adminMiddleware, report.createReportType);
+router.get('/admin/report', adminMiddleware, reports.adminGetReport);
+router.put('/admin/report/:id', adminMiddleware, reports.adminEditReport);
+router.delete('/admin/report/:id', adminMiddleware, reports.adminDeleteReport);
+
+router.get('/admin/reportType', adminMiddleware, reportType.getReportType);
+router.get('/admin/reportType/:id', adminMiddleware, reportType.getDetailReportType);
+router.post('/admin/reportType', adminMiddleware, reportType.createReportType);
+router.put('/admin/reportType/:id', adminMiddleware, reportType.updateReportType);
+router.delete('/admin/reportType/:id', adminMiddleware, reportType.deleteReportType);
 
 router.get('/admin/settings', settings.getSettings);
 router.get('/admin/setting/:id', settings.getDetailSetting);
