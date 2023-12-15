@@ -71,7 +71,7 @@ export default{
   */
 
   updateCatalog: async(req,res) => {
-    const{categories, name, uid, description,image1Url,image2Url,image3Url,catalogUrl, type, keywords,status } = req.body;
+    const{categories, name, uid, description,image1Url,image2Url,image3Url,catalogUrl, type, keywords} = req.body;
     const{id} = req.params
 
     try{

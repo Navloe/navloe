@@ -14,6 +14,7 @@ import multer from "multer";
 import settingProfil from "./controller/user/settingProfil.mjs";
 import reportType from "./controller/admin/reportType.mjs";
 import reports from "./controller/admin/reports.mjs";
+import adminCatalogs from "./controller/admin/catalogs.mjs";
 
 
 const router = Router()
@@ -33,11 +34,11 @@ router.get('/', landingPage.getLandingPage);
 router.get('/user/enterprise', umkmMiddleware, userEnterprises.getEnterprise);
 router.put('/user/enterprise', umkmMiddleware, userEnterprises.updateEnterprise);
 
-router.get('/user/catalogs', catalogs.getCatalogs);
-router.get('/user/catalog/:id', catalogs.getDetailCatalog);
-router.post('/user/catalog', catalogs.createCatalog);
-router.put('/user/catalog/:id', catalogs.updateCatalog);
-router.delete('/user/catalog/:id', catalogs.deleteCatalog);
+router.get('/dashboard/catalogs', catalogs.getCatalogs);
+router.get('/dashboard/catalog/:id', catalogs.getDetailCatalog);
+router.post('/dashboard/catalog', catalogs.createCatalog);
+router.put('/dashboard/catalog/:id', catalogs.updateCatalog);
+router.delete('/dashboard/catalog/:id', catalogs.deleteCatalog);
 
 router.get('/user/userSetting/:id', settingProfil.getUserSetting);
 router.put('/user/userSetting/:id', settingProfil.editUserSetting);
@@ -75,5 +76,11 @@ router.get('/admin/setting/:id', settings.getDetailSetting);
 router.post('/admin/setting', settings.postSetting);
 router.put('/admin/setting/:id', settings.editSetting);
 router.delete('/admin/setting/:id', settings.deleteSetting);
+
+router.get('/admin/catalogs', adminCatalogs.getCatalogs);
+router.get('/admin/catalog/:id', adminCatalogs.getDetailCatalog);
+router.put('/admin/catalog/:id', adminCatalogs.editCatalog);
+router.delete('/admin/catalog/:id', adminCatalogs.deleteCatalog);
+
 
 export default router;
