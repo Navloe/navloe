@@ -34,11 +34,11 @@ router.get('/', landingPage.getLandingPage);
 router.get('/user/enterprise', umkmMiddleware, userEnterprises.getEnterprise);
 router.put('/user/enterprise', umkmMiddleware, userEnterprises.updateEnterprise);
 
-router.get('/dashboard/catalogs', catalogs.getCatalogs);
-router.get('/dashboard/catalog/:id', catalogs.getDetailCatalog);
-router.post('/dashboard/catalog', catalogs.createCatalog);
-router.put('/dashboard/catalog/:id', catalogs.updateCatalog);
-router.delete('/dashboard/catalog/:id', catalogs.deleteCatalog);
+router.get('/user/catalogs', catalogs.getCatalogs);
+router.get('/user/catalog/:id', catalogs.getDetailCatalog);
+router.post('/user/catalog', catalogs.createCatalog);
+router.put('/user/catalog/:id', catalogs.updateCatalog);
+router.delete('/user/catalog/:id', catalogs.deleteCatalog);
 
 router.get('/user/userSetting/:id', settingProfil.getUserSetting);
 router.put('/user/userSetting/:id', settingProfil.editUserSetting);

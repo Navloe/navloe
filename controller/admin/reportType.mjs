@@ -1,7 +1,6 @@
-// import yup from "yup";
+import yup from "yup";
+import validator from "../../helpers/validator.mjs";
 import { PrismaClient } from "@prisma/client";
-import { request } from "express";
-// import validator from "../helpers/validator.mjs";
 const prisma = new PrismaClient();
 
 export default{
@@ -77,6 +76,18 @@ export default{
 
   createReportType: async (req,res) => {
     try{
+      const schema = yup.object({
+        reportType: yup.string().required(),
+      });
+
+      const validate = await validator(schema, req.body);
+
+      if (validate.errors) {
+        return res.status(400).json({
+          errors: validate.errors,
+        });
+      }
+
       const{reportType} = req.body;
 
       await prisma.reportTypes.create({

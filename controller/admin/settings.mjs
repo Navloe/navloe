@@ -82,6 +82,19 @@ export default{
     const{id} = req.params
 
     try{
+      const schema = yup.object({
+        name: yup.string().required(),
+        value: yup.string().required()
+      });
+
+      const validate = await validator(schema, req.body);
+
+      if (validate.errors) {
+        return res.status(400).json({
+          errors: validate.errors,
+        });
+      }
+
       const oldSetting = await prisma.settings.findFirst({
         where:{id}
       })

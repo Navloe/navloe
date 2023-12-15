@@ -1,7 +1,6 @@
-// import yup from "yup";
+import yup from "yup";
+import validator from "../../helpers/validator.mjs";
 import { PrismaClient } from "@prisma/client";
-import { request } from "express";
-// import validator from "../helpers/validator.mjs";
 const prisma = new PrismaClient();
 
 export default{
@@ -14,7 +13,7 @@ export default{
   adminGetReport: async (req,res) => {
     try{
       const reports = await prisma.reports.findMany({
-        include:{
+        select:{
           Enterprise : true,
           Catalog: true,
           reportType: true
@@ -22,6 +21,7 @@ export default{
       })
       return res.json(reports)
     }catch(error){
+
       return res.INTERNAL_SERVER_ERROR()
     }
   },
@@ -32,6 +32,19 @@ export default{
     const{id} = req.params;
 
     try{
+      const schema = yup.object({
+        message: yup.string().required(),
+        status: yup.string().oneOf(['pending', 'solved', 'rejected']),
+      });
+
+      const validate = await validator(schema, req.body);
+      
+      if (validate.errors) {
+        return res.status(400).json({
+          errors: validate.errors,
+        });
+      }
+
       const oldReport = await prisma.reports.findFirst({
         where:{id},
       });

@@ -169,6 +169,28 @@ export default{
     const{id} = req.params
 
     try {
+      const schema = yup.object({
+        name: yup.string().required(),
+        name: yup.string().required(),
+        type: yup.string().required().oneOf(['product', 'service', 'both']),
+        categories: yup.string().required(),
+        keywords: yup.string().required(),
+        description: yup.string().required(),
+        shortDescription: yup.string().required(),
+        logoUrl: yup.string().required(),
+        storeUrl: yup.string().required(),
+        status: yup.string().required().oneOf(['active', 'inactive', 'pending']),
+        inactiveReason: yup.string().required(),
+      });
+
+      const validate = await validator(schema, req.body);
+
+      if (validate.errors) {
+        return res.status(400).json({
+          errors: validate.errors,
+        });
+      }
+
       const oldEnterprise = await prisma.enterprises.findFirst({
         where:{id},
       });
