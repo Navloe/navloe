@@ -1,6 +1,6 @@
-// const apiBaseUrl= process.env.API_BASE_URL;
+const apiBaseUrl= process.env.API_BASE_URL || 'http://localhost:3001/';
 // const apiBaseUrl= 'http://localhost:3001/';
-const apiBaseUrl= 'http://192.168.19.229:3001/';
+// const apiBaseUrl= 'http://192.168.19.229:3001/';
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
