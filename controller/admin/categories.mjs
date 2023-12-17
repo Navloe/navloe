@@ -105,19 +105,19 @@ export default {
   create: async (req, res) => {
 
     try{
-      // const schema = yup.object({
-      //   name: yup.string().required(),
-      //   imageUrl: yup.string().required(),
-      //   type: yup.string().required().oneOf(['product', 'service'])
-      // });
+      const schema = yup.object({
+        name: yup.string().required(),
+        imageUrl: yup.string().required(),
+        type: yup.string().required().oneOf(['product', 'service'])
+      });
 
-      // const validate = await validator(schema, req.body);
+      const validate = await validator(schema, req.body);
 
-      // if (validate.errors) {
-      //   return res.status(400).json({
-      //     errors: validate.errors,
-      //   });
-      // }
+      if (validate.errors) {
+        return res.status(400).json({
+          errors: validate.errors,
+        });
+      }
     
       const { name, type } = req.body;
       const base64String = req.file.buffer.toString('base64');
@@ -156,6 +156,20 @@ export default {
     const { id } = req.params
 
     try {
+      const schema = yup.object({
+        name: yup.string().required(),
+        imageUrl: yup.string().required(),
+        type: yup.string().required().oneOf(['product', 'service'])
+      });
+
+      const validate = await validator(schema, req.body);
+
+      if (validate.errors) {
+        return res.status(400).json({
+          errors: validate.errors,
+        });
+      }
+
       const oldCategory = await prisma.categories.findFirst({
         where: { id },
       });

@@ -16,6 +16,14 @@ import users from "./controller/admin/users.mjs";
 import adminCategories from "./controller/admin/categories.mjs";
 import adminEnterprises from "./controller/admin/enterprises.mjs";
 import settings from "./controller/admin/settings.mjs";
+import report from "./controller/report.mjs";
+import landingPage from "./controller/landingPage.mjs";
+import settings from "./controller/admin/settings.mjs";
+import multer from "multer";
+import settingProfil from "./controller/user/settingProfil.mjs";
+import reportType from "./controller/admin/reportType.mjs";
+import reports from "./controller/admin/reports.mjs";
+import adminCatalogs from "./controller/admin/catalogs.mjs";
 
 
 const router = Router()
@@ -30,6 +38,7 @@ router.post('/auth/register', auth.register);
 router.get('/auth/whoami', auth.whoami);
 
 router.get('/categories', publicCategories.get);
+// router.get('/', landingPage.getLandingPage);
 
 // USER AREA
 router.get('/user/enterprise', umkmMiddleware, userEnterprises.getEnterprise);
@@ -41,7 +50,9 @@ router.post('/user/catalog', umkmMiddleware, upload.any(), catalogs.createCatalo
 router.put('/user/catalog/:id', umkmMiddleware, upload.any(), catalogs.updateCatalog);
 router.delete('/user/catalog/:id', umkmMiddleware, catalogs.deleteCatalog);
 
-// router.get('/', landingPage.getLandingPage);
+router.get('/user/userSetting/:id', settingProfil.getUserSetting);
+router.put('/user/userSetting/:id', settingProfil.editUserSetting);
+
 
 // ADMIN AREA
 router.get('/admin/users', adminMiddleware, users.get);
@@ -60,14 +71,26 @@ router.get('/admin/enterprise/:id', adminMiddleware, adminEnterprises.getDetailE
 router.put('/admin/enterprise/:id', adminMiddleware, adminEnterprises.updateEnterprise);
 router.delete('/admin/enterprise/:id', adminMiddleware, adminEnterprises.deleteEnterprise);
 
-router.get('/admin/report', adminMiddleware, report.adminGetReport);
-router.put('/admin/report/:id', adminMiddleware, report.adminEditReport);
-router.post('/admin/reportType', adminMiddleware, report.createReportType);
+router.get('/admin/report', adminMiddleware, reports.adminGetReport);
+router.put('/admin/report/:id', adminMiddleware, reports.adminEditReport);
+router.delete('/admin/report/:id', adminMiddleware, reports.adminDeleteReport);
+
+router.get('/admin/reportType', adminMiddleware, reportType.getReportType);
+router.get('/admin/reportType/:id', adminMiddleware, reportType.getDetailReportType);
+router.post('/admin/reportType', adminMiddleware, reportType.createReportType);
+router.put('/admin/reportType/:id', adminMiddleware, reportType.updateReportType);
+router.delete('/admin/reportType/:id', adminMiddleware, reportType.deleteReportType);
 
 router.get('/admin/settings', settings.getSettings);
 router.get('/admin/setting/:id', settings.getDetailSetting);
 router.post('/admin/setting', settings.postSetting);
 router.put('/admin/setting/:id', settings.editSetting);
 router.delete('/admin/setting/:id', settings.deleteSetting);
+
+router.get('/admin/catalogs', adminCatalogs.getCatalogs);
+router.get('/admin/catalog/:id', adminCatalogs.getDetailCatalog);
+router.put('/admin/catalog/:id', adminCatalogs.editCatalog);
+router.delete('/admin/catalog/:id', adminCatalogs.deleteCatalog);
+
 
 export default router;

@@ -11,26 +11,6 @@ export default{
    * @param {import('express').Response} res 
   */
 
-  createReportType: async (req,res) => {
-    try{
-      const{reportType} = req.body;
-
-      await prisma.reportTypes.create({
-        data:{
-          reportType:reportType
-        }
-      })
-      return res.status(200).json({
-        message: "Report created successful"
-      });
-
-    }catch(error){
-      console.log(error);
-      return res.INTERNAL_SERVER_ERORR()
-    }
-    
-  },
-
   createReport: async (req,res) => {
     try{
       const{enterpriseId,catalogId,reportTypeId,   message, ipAddress, status} = req.body;
@@ -48,7 +28,7 @@ export default{
           catalogId: catalogId,
           reportTypeId: reportTypeId,
           message: message,
-          ipAddress: ipAddress,
+          ipAddress: ip,
           status: status
         }
       })
@@ -59,54 +39,8 @@ export default{
 
     }catch(error){
       console.error(error);
-      return res.INTERNAL_SERVER_ERORR()
-    }
-  },
-
-  adminGetReport: async (req,res) => {
-    try{
-      const reports = await prisma.reports.findMany({
-        include:{
-          Enterprise : true,
-          Catalog: true,
-          reportType: true
-        }
-      })
-      return res.json(reports)
-    }catch(error){
-      return res.INTERNAL_SERVER_ERORR()
-    }
-  },
-
-
-  adminEditReport: async (req,res) => {
-    const {message, status} = req.body;
-    const{id} = req.params;
-
-    try{
-      const oldReport = await prisma.reports.findFirst({
-        where:{id},
-      });
-
-      if(!oldReport){
-        return res.status(404).json({
-          message:'Report not found'
-        })
-      }
-
-      const updateReport = await prisma.reports.update({
-        where:{id},
-        data:{
-          message: message || oldReport.message,
-          status: status || oldReport.status
-        }
-      });
-
-      return res.status(200).json({
-        message:'Report have been updated'
-      })
-    }catch(error){
-      return res.INTERNAL_SERVER_ERORR()
+      return res.INTERNAL_SERVER_ERROR()
     }
   }
+
 }
