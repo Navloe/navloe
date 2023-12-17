@@ -48,10 +48,9 @@
   const password = ref("123123123");
   const emailMessage = ref("");
   const isLoading = ref(false);
-  const toasts = ref([{}]);
+  const toasts = ref<{ type: string, message: string }[]>([]);
 
   onMounted(() => {
-    toasts.value.pop();
   })
 
   const handleLogin = async function() {
@@ -67,30 +66,33 @@
   }
 
   const login = async () => {
-    try {
+    try {           
       const req = await useAxios.post('/auth/login', {
         email: email.value,
         password: password.value
       })
-        
-      useTokenStore().setToken(req.data.token);
+      await useTokenStore().setToken(req.data.token)
+      localStorage.setItem('token', req.data.token)
+
+      const user = await useAxios.get('/auth/whoami')
       
+      const {umkmStatusActived} = user.data
+
       toasts.value.push({
         type: "success",
         message: "Login berhasil!"
-      });    
-
-      const user = await useAxios.get('/auth/whoami')
-      const {umkmInformationFilled, umkmStatusActived} = user.data
+      });
 
       if (!umkmStatusActived) {
         navigateTo('/auth/daftar-umkm')
+      } else {
+        navigateTo('/umkm/dashboard')
       }
 
-    } catch (error: any) {
+    } catch (error: any) {      
       toasts.value.push({
         type: "danger",
-        message: error.response.data.error
+        message: error.response.data.error ?? "Terjadi kesalahan pada sistem"
       });
     }
   }

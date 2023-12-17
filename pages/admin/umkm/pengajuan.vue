@@ -223,12 +223,6 @@ import Swal from 'sweetalert2';
     }
   }
 
-  // const getDate = (date: string) => {
-  //   const result = useDateFormat(date, 'DD-MM-YYYY HH:mm:ss').value
-  //   console.log(result.value);
-    
-  //   return result
-  // }
 </script>
 
 <style>

@@ -30,6 +30,7 @@
     "axios": "^1.6.2",
     "flowbite": "^2.2.0",
     "flowbite-vue": "^0.1.0",
+    "moment": "^2.29.4",
     "nuxt-icon": "^0.6.6",
     "sweetalert2": "^11.10.1",
     "vue3-carousel-nuxt": "^1.1.0"

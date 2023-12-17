@@ -1,13 +1,13 @@
 <template>
   <div class="flex justify-center min-h-screen">
-    <nuxt-link to="/" class="absolute top-6 left-6 flex items-center">
+    <nuxt-link v-if="!isLoading" to="/" class="absolute top-6 left-6 flex items-center">
       <Icon name="material-symbols:arrow-back-rounded" color="gray" class="text-xl mr-2" />
       <span class="text-sm">Kembali</span>
     </nuxt-link>
     <div class="py-12 px-4 w-[400px]">
-      <img src="@/assets/images/navloeLogo.png" class="w-20 mx-auto" alt="">
-      <h4 class="my-4 text-center text-lg">Pendaftaran UMKM</h4>
-      <div class="step">
+      <img v-if="!isLoading" src="@/assets/images/navloeLogo.png" class="w-20 mx-auto" alt="">
+      <h4 v-if="!isLoading" class="my-4 text-center text-lg">Pendaftaran UMKM</h4>
+      <div v-if="!isLoading" class="step">
         <div :class="tab >= 2 ? 'bg-blue-400' : 'bg-slate-200'" class="absolute top-[calc(50%-16px)] h-2 w-[calc(50%-24px)] transform left-6"></div>
         <div :class="tab >= 3 ? 'bg-blue-400' : 'bg-slate-200'" class="absolute top-[calc(50%-16px)] h-2 w-[calc(50%-24px)] transform left-[calc(50%+16px)]"></div>
         <div class="step-items" :class="tab >= 1 ? 'active' : ''">
@@ -24,7 +24,7 @@
         </div>
       </div>
       <form @submit.prevent="handleRegister()">
-        <ToastList class="" :toasts="toasts" />
+        <ToastList v-if="!isLoading" class="" :toasts="toasts" />
         <fwb-alert v-if="deniedReason" class="border-t-4 rounded-none" type="danger">
           <span class="font-bold">Hai {{ enterprise.name }}, Pengajuan UMKM kamu telah ditolak dengan alasan berikut:</span>
           <p class="mt-1">{{ deniedReason }}</p>
@@ -33,8 +33,8 @@
 
         <!-- content display -->
         <template v-if="tab == 0">
-          <div class="flex justify-center">
-            <fwb-spinner size="12" color="blue" class="mt-4" />
+          <div class="flex justify-center items-center h-screen fixed top-0 left-0 w-full">
+            <fwb-spinner size="12" color="blue" class="" />
           </div>
         </template>
         <template v-else-if="tab == 1">
@@ -181,7 +181,6 @@
 
   onMounted(async () => {
     toasts.value.pop();
-    isLoading.value = false
 
     if(useTokenStore().getToken()){
       try {
@@ -191,8 +190,10 @@
         console.log(error);
       }
     }
-    else
+    else{
       tab.value = 1
+      isLoading.value = false
+    }
   })
 
   const handleRegister = async function() {
@@ -328,7 +329,7 @@
         deniedReason.value = enterprise.value.inactiveReason
         enterprisePending.value = true
       } else {
-        navigateTo('/auth/masuk')
+        navigateTo('/umkm/dashboard')
       }
     } catch (error) {
       console.error(error);

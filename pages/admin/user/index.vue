@@ -99,7 +99,6 @@
       }>(`admin/users?page=${pagination.value.currentPage}&limit=${pagination.value.limitPerPage}&searchKeyword=${searchKeyword.value}`);
       datas.value = req.data.data
       pagination.value = req.data.pagination;
-      console.log(pagination);  
       isLoading.value = false
     } catch (error) {
       console.error(error);
