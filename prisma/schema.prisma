@@ -18,7 +18,7 @@ model Users {
   phoneNumber   String        @db.VarChar(16)
   role          UserRole      @default(umkm)
   emailVerified Boolean       @default(false)
-  createdAt     DateTime      @default(now()) @db.DateTime()
+  createdAt     DateTime      @default(now())
   Enterprises   Enterprises[]
 }
 
@@ -55,8 +55,8 @@ model Enterprises {
   storeUrl         String?           @db.Text
   status           EnterpriseStatus  @default(pending)
   inactiveReason   String?          @db.Text
-  updatedAt        DateTime         @default(now()) @db.DateTime()
-  createdAt        DateTime         @default(now()) @db.DateTime()
+  updatedAt        DateTime         @default(now())
+  createdAt        DateTime         @default(now())
   Catalogs         Catalogs[]
   Reports          Reports[]
 }
@@ -90,8 +90,8 @@ model Catalogs {
   keywords      String         @db.Text
   status        CatalogStatus
   suspendReason String?        @db.Text
-  updatedAt     DateTime       @default(now()) @db.DateTime()
-  createdAt     DateTime       @default(now()) @db.DateTime()
+  updatedAt     DateTime       @default(now())
+  createdAt     DateTime       @default(now())
   Reports       Reports[]
 }
 
@@ -118,7 +118,7 @@ model Reports {
   message      String       @db.Text
   ipAddress    String       @db.VarChar(18)
   status       ReportStatus
-  createdAt    DateTime     @default(now()) @db.DateTime()
+  createdAt    DateTime     @default(now())
 }
 
 enum ReportStatus {

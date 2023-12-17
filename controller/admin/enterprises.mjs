@@ -168,17 +168,7 @@ export default{
 
     try {
       const schema = yup.object({
-        name: yup.string().required(),
-        name: yup.string().required(),
-        type: yup.string().required().oneOf(['product', 'service', 'both']),
-        categories: yup.string().required(),
-        keywords: yup.string().required(),
-        description: yup.string().required(),
-        shortDescription: yup.string().required(),
-        logoUrl: yup.string().required(),
-        storeUrl: yup.string().required(),
-        status: yup.string().required().oneOf(['active', 'inactive', 'pending']),
-        inactiveReason: yup.string().required(),
+        status: yup.string().oneOf(['active', 'inactive', 'pending']),
       });
 
       const validate = await validator(schema, req.body);
@@ -201,17 +191,7 @@ export default{
       await prisma.enterprises.update({
         where:{id},
         data:{
-          nib: nib || oldEnterprise.nib,
-          name: name || oldEnterprise.name,
-          type: type || oldEnterprise.type,
-          categories: categories || oldEnterprise.categories,
-          keywords: keywords || oldEnterprise.keywords,
-          description: description || oldEnterprise.description,
-          shortDescription: shortDescription || oldEnterprise.shortDescription,
-          logoUrl: logoUrl  || oldEnterprise.logoUrl,
-          storeUrl: storeUrl || oldEnterprise.storeUrl,
           status: status || oldEnterprise.status,
-          inactiveReason: inactiveReason || oldEnterprise.inactiveReason,
         }
       })
 

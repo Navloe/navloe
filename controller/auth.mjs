@@ -172,8 +172,9 @@ export default {
    * @param {import('express').Response} res 
    */
   whoami: async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
     try {
+      const token = req.headers.authorization.split(' ')[1];
+
       jwt.verify(token, process.env.JWT_UMKM_SECRET, async function(err, decodedToken) {
         if(!err) {
           const { id, role } = decodedToken
