@@ -51,7 +51,7 @@ model Enterprises {
   keywords         String?           @db.Text
   description      String?           @db.Text
   shortDescription String?           @db.VarChar(36)
-  logoUrl          String?           @db.VarChar(48)
+  logoUrl          String?           @db.Text
   storeUrl         String?           @db.Text
   status           EnterpriseStatus  @default(pending)
   inactiveReason   String?          @db.Text

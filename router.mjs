@@ -1,16 +1,21 @@
 import { Router } from "express"
-import auth from "./controller/auth.mjs";
+import multer from "multer";
+
 import umkmMiddleware from "./middleware/umkm.middleware.mjs";
 import adminMiddleware from "./middleware/admin.middleware.mjs";
-import users from "./controller/admin/users.mjs";
-import categories from "./controller/admin/categories.mjs";
-import adminEnterprises from "./controller/admin/enterprises.mjs";
+
+import auth from "./controller/auth.mjs";
+import report from "./controller/report.mjs";
+import landingPage from "./controller/landingPage.mjs";
+import publicCategories from "./controller/categories.mjs";
+
 import userEnterprises from "./controller/user/enterprises.mjs";
 import catalogs from "./controller/user/catalogs.mjs";
-import report from "./controller/Report.mjs";
-import landingPage from "./controller/landingPage.mjs";
+
+import users from "./controller/admin/users.mjs";
+import adminCategories from "./controller/admin/categories.mjs";
+import adminEnterprises from "./controller/admin/enterprises.mjs";
 import settings from "./controller/admin/settings.mjs";
-import multer from "multer";
 
 
 const router = Router()
@@ -24,15 +29,17 @@ router.post('/auth/login', auth.login);
 router.post('/auth/register', auth.register);
 router.get('/auth/whoami', auth.whoami);
 
+router.get('/categories', publicCategories.get);
+
 // USER AREA
 router.get('/user/enterprise', umkmMiddleware, userEnterprises.getEnterprise);
-router.put('/user/enterprise', umkmMiddleware, userEnterprises.updateEnterprise);
+router.put('/user/enterprise', upload.single('logoUrl'), umkmMiddleware, userEnterprises.updateEnterprise);
 
-router.get('/user/catalogs', catalogs.getCatalogs);
-router.get('/user/catalog/:id', catalogs.getDetailCatalog);
-router.post('/user/catalog', catalogs.createCatalog);
-router.put('/user/catalog/:id', catalogs.updateCatalog);
-router.delete('/user/catalog/:id', catalogs.deleteCatalog);
+router.get('/user/catalogs', umkmMiddleware,  catalogs.getCatalogs);
+router.get('/user/catalog/:id', umkmMiddleware, catalogs.getDetailCatalog);
+router.post('/user/catalog', umkmMiddleware, upload.any(), catalogs.createCatalog);
+router.put('/user/catalog/:id', umkmMiddleware, upload.any(), catalogs.updateCatalog);
+router.delete('/user/catalog/:id', umkmMiddleware, catalogs.deleteCatalog);
 
 // router.get('/', landingPage.getLandingPage);
 
@@ -42,11 +49,11 @@ router.get('/admin/user/:id', adminMiddleware, users.detailUser);
 router.put('/admin/user/:id', adminMiddleware, users.updateUser);
 router.delete('/admin/user/:id', adminMiddleware, users.deleteUser);
 
-router.get('/admin/categories', adminMiddleware, categories.get);
-router.get('/admin/category/:id', adminMiddleware, categories.detail);
-router.post('/admin/category', upload.single('imageUrl'), adminMiddleware, categories.create);
-router.put('/admin/category/:id', adminMiddleware, categories.update);
-router.delete('/admin/category/:id', adminMiddleware, categories.delete);
+router.get('/admin/categories', adminMiddleware, adminCategories.get);
+router.get('/admin/category/:id', adminMiddleware, adminCategories.detail);
+router.post('/admin/category', upload.single('imageUrl'), adminMiddleware, adminCategories.create);
+router.put('/admin/category/:id', adminMiddleware, adminCategories.update);
+router.delete('/admin/category/:id', adminMiddleware, adminCategories.delete);
 
 router.get('/admin/enterprises', adminMiddleware, adminEnterprises.getEnterprises);
 router.get('/admin/enterprise/:id', adminMiddleware, adminEnterprises.getDetailEnterprise);

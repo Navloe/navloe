@@ -15,7 +15,6 @@ async function main() {
       emailVerified: true,
     },
   })
-  console.log({ adminNavloe })
 }
 main()
   .then(async () => {

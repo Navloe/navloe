@@ -124,8 +124,6 @@ export default{
           displayedData: paginatedEnterprises.length,
           totalData: allEnterprises.length,
         },
-        skip: limitPerPage * (page - 1),
-        take: limitPerPage,
       });
     }catch(error){
       return res.INTERNAL_SERVER_ERROR()

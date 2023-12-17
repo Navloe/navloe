@@ -22,7 +22,6 @@ export default async (req, res, next) => {
     const verify = await jwt.verify(authorization[1], process.env.JWT_UMKM_SECRET);
 
     if (verify.role != 'admin') {
-      console.log(verify);
       throw 'Akses ditolak!'
     }
 

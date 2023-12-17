@@ -3,6 +3,7 @@ import validator from "../../helpers/validator.mjs";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import jwt from "jsonwebtoken";
+import cloudinary from '../../config/cloudinaryConfig.mjs';
 
 export default{
 
@@ -61,33 +62,39 @@ export default{
 
       if(!enterprise){
         return res.status(404).json({
-          error: 'Enterprise not found'
+          error: 'UMKM tidak ditemukan'
         })
       }
 
-      const{nib, name, type, categories, keywords, description, shortDescription, logoUrl, storeUrl, status, inactiveReason} = req.body;
+      let logoUrl = null
+      if (req.file) {
+        const base64String = req.file.buffer.toString('base64');
+        const result = await cloudinary.uploader.upload(`data:image/png;base64,${base64String}`, {
+          folder: "enterprisesLogo",
+          public_id: req.file.filename
+        });
+        logoUrl = result.secure_url;
+      }
+
+      const{type, categories, keywords, description, shortDescription, storeUrl} = req.body;
 
       const oldEnterprise = enterprise
 
       await prisma.enterprises.update({
         where:{ id: oldEnterprise.id},
         data:{
-          nib: nib || oldEnterprise.nib,
-          name: name || oldEnterprise.name,
+          logoUrl: logoUrl  || oldEnterprise.logoUrl,
           type: type || oldEnterprise.type,
+          shortDescription: shortDescription || oldEnterprise.shortDescription,
+          description: description || oldEnterprise.description,
           categories: categories || oldEnterprise.categories,
           keywords: keywords || oldEnterprise.keywords,
-          description: description || oldEnterprise.description,
-          shortDescription: shortDescription || oldEnterprise.shortDescription,
-          logoUrl: logoUrl  || oldEnterprise.logoUrl,
           storeUrl: storeUrl || oldEnterprise.storeUrl,
-          status: status || oldEnterprise.status,
-          inactiveReason: inactiveReason || oldEnterprise.inactiveReason,
         }
       })
 
       return res.status(200).json({
-        message: 'Enterprise have been updated'
+        message: 'UMKM telah diperbaharui'
       })
     }catch(error){
       return res.INTERNAL_SERVER_ERROR()

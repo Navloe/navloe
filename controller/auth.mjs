@@ -49,7 +49,7 @@ export default {
       }
 
       if (!await bcrypt.compare(password, findAccount.password)) {
-        return res.status(403).json({
+        return res.status(404).json({
           error: 'Email atau Password masih salah!'
         })
       }
