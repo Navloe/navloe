@@ -168,7 +168,7 @@ export default{
 
     try {
       const schema = yup.object({
-        status: yup.string().oneOf(['active', 'inactive', 'pending']),
+        status: yup.string().oneOf(['active', 'inactive', 'pending', 'rejected']),
       });
 
       const validate = await validator(schema, req.body);
