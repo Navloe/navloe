@@ -16,7 +16,6 @@ import users from "./controller/admin/users.mjs";
 import adminCategories from "./controller/admin/categories.mjs";
 import adminEnterprises from "./controller/admin/enterprises.mjs";
 import settings from "./controller/admin/settings.mjs";
-import report from "./controller/report.mjs";
 import landingPage from "./controller/landingPage.mjs";
 import settings from "./controller/admin/settings.mjs";
 import multer from "multer";
