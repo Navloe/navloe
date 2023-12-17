@@ -27,7 +27,4 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "vue3-carousel-nuxt",
   ],
-  plugins: [
-    '~/plugins/moment.ts',
-  ],
 })
