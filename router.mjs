@@ -6,7 +6,7 @@ import adminMiddleware from "./middleware/admin.middleware.mjs";
 
 import auth from "./controller/auth.mjs";
 import report from "./controller/report.mjs";
-import landingPage from "./controller/landingPage.mjs";
+// import landingPage from "./controller/landingPage.mjs";
 import publicCategories from "./controller/categories.mjs";
 
 import userEnterprises from "./controller/user/enterprises.mjs";
@@ -15,10 +15,9 @@ import catalogs from "./controller/user/catalogs.mjs";
 import users from "./controller/admin/users.mjs";
 import adminCategories from "./controller/admin/categories.mjs";
 import adminEnterprises from "./controller/admin/enterprises.mjs";
+// import settings from "./controller/admin/settings.mjs";
+// import landingPage from "./controller/landingPage.mjs";
 import settings from "./controller/admin/settings.mjs";
-import landingPage from "./controller/landingPage.mjs";
-import settings from "./controller/admin/settings.mjs";
-import multer from "multer";
 import settingProfil from "./controller/user/settingProfil.mjs";
 import reportType from "./controller/admin/reportType.mjs";
 import reports from "./controller/admin/reports.mjs";
@@ -42,16 +41,13 @@ router.get('/categories', publicCategories.get);
 // USER AREA
 router.get('/user/enterprise', umkmMiddleware, userEnterprises.getEnterprise);
 router.put('/user/enterprise', upload.single('logoUrl'), umkmMiddleware, userEnterprises.updateEnterprise);
-
 router.get('/user/catalogs', umkmMiddleware,  catalogs.getCatalogs);
 router.get('/user/catalog/:id', umkmMiddleware, catalogs.getDetailCatalog);
 router.post('/user/catalog', umkmMiddleware, upload.any(), catalogs.createCatalog);
 router.put('/user/catalog/:id', umkmMiddleware, upload.any(), catalogs.updateCatalog);
 router.delete('/user/catalog/:id', umkmMiddleware, catalogs.deleteCatalog);
-
 router.get('/user/userSetting/:id', settingProfil.getUserSetting);
 router.put('/user/userSetting/:id', settingProfil.editUserSetting);
-
 
 // ADMIN AREA
 router.get('/admin/users', adminMiddleware, users.get);
