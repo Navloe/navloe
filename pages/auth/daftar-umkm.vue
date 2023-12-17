@@ -5,7 +5,7 @@
       <span class="text-sm">Kembali</span>
     </nuxt-link>
     <div class="py-12 px-4 w-[400px]">
-      <img v-if="!isLoading" src="@/assets/images/navloeLogo.png" class="w-20 mx-auto" alt="">
+      <img v-if="!isLoading" src="/images/navloeLogo.png" class="w-20 mx-auto" alt="">
       <h4 v-if="!isLoading" class="my-4 text-center text-lg">Pendaftaran UMKM</h4>
       <div v-if="!isLoading" class="step">
         <div :class="tab >= 2 ? 'bg-blue-400' : 'bg-slate-200'" class="absolute top-[calc(50%-16px)] h-2 w-[calc(50%-24px)] transform left-6"></div>
