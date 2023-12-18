@@ -331,6 +331,8 @@
       } else {
         navigateTo('/umkm/dashboard')
       }
+      
+      isLoading.value = false
     } catch (error) {
       console.error(error);
       
