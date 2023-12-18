@@ -69,7 +69,7 @@
       </section>
       <section class="w-full mt-8">
         <h4 class="font-semibold mb-4">Produk & Jasa yang Mungkin Kamu Suka</h4>
-        <div class="flex gap-3 mt-4 w-full">
+        <div v-if="!isLoading" class="flex gap-3 mt-4 w-full">
           <carousel :breakpoints="catalogBreakpoints" :wrap-around="true">
             <slide v-for="slide in 10" :key="slide">
               <CatalogCard :catalog="catalog" class="w-full" />
@@ -80,6 +80,9 @@
               <pagination />
             </template>
           </carousel>
+        </div>
+        <div v-else>
+          Loading...
         </div>
       </section>
       <section class="w-full mt-8">
@@ -104,6 +107,8 @@
 <script lang="ts" setup>
   import 'vue3-carousel/dist/carousel.css'
   import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+
+  const isLoading = ref(true)
 
   const pictures = ref([
     {
@@ -165,6 +170,7 @@
 
   onMounted(async () => {
     await loadData()
+    isLoading.value = false
   })
 
   const loadData = async () => {
