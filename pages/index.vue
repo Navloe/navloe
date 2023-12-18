@@ -14,10 +14,57 @@
       <section class="w-full mt-8">
         <div class="flex justify-between items-center">
           <h4 class="font-semibold">Kategori Pilihan</h4>
-          <nuxt-link to="/kategori" class="text-primary underline text-sm">Lihat Semua</nuxt-link>
+          <!-- <nuxt-link to="/kategori" class="text-primary underline text-sm">Lihat Semua</nuxt-link> -->
         </div>
         <div class="mt-4 w-full grid grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-2">
-          <CategoryCard v-for="i in 12" :key="i" />
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/aksesoris.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">aksesoris</h4>
+          </div>
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/alat musik.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">alat musik</h4>
+          </div>
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/dekorasi rumah.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">dekorasi rumah</h4>
+          </div>
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/desain logo dan poster.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">desain logo</h4>
+          </div>
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/kerajinan tangan.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">kerajinan tangan</h4>
+          </div>
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/makanan.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">makanan</h4>
+          </div>
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/pakaian pria.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">pakaian pria</h4>
+          </div>
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/pakaian wanita.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">pakaian wanita</h4>
+          </div>
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/peralatan dapur.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">peralatan dapur</h4>
+          </div>
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/peralatan rumah.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">peralatan rumah</h4>
+          </div>
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/perawatan kulit.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">perawatan kulit</h4>
+          </div>
+          <div class="w-full bg-primary relative xl:mb-4">
+            <LazyNuxtImg src="images/categories/service tv.jpg" class="h-full w-full object-cover relative opacity-50" />
+            <h4 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 font-bold capitalize text-white">service tv</h4>
+          </div>
         </div>
       </section>
       <section class="w-full mt-8">
@@ -97,6 +144,36 @@
   const catalog = ref({
     name: "Controller Gaming CG001"
   })
+  const catalogs = ref()
+  const categories = [
+    "aksesoris",
+    "alat musik",
+    "dekorasi rumah",
+    "desain logo dan poster",
+    "kerajinan tangan",
+    "makanan",
+    "pakaian pria",
+    "pakaian wanita",
+    "peralatan dapur",
+    "peralatan rumah",
+    "perawatan kulit",
+    "produk perawatan kulit",
+    "service laptop dan barang elektronik",
+    "service tv",
+    "vitamin dan suplemen",
+  ]
+
+  onMounted(async () => {
+    await loadData()
+  })
+
+  const loadData = async () => {
+    const req = await useAxios.get('/catalogs?limit=12')
+
+    catalogs.value = req.data.data
+
+    console.log(catalogs.value);
+  }
 </script>
 
 <style lang="postcss" scoped>
