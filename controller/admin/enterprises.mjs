@@ -163,11 +163,12 @@ export default{
    * @param {import('express').Response} res 
   */
   updateEnterprise: async (req,res) => {
-    const{nib, name, type, categories, keywords, description, shortDescription, logoUrl, storeUrl, status, inactiveReason} = req.body;
+    const{status, inactiveReason} = req.body;
     const{id} = req.params
 
     try {
       const schema = yup.object({
+        inactiveReason: yup.string(),
         status: yup.string().oneOf(['active', 'inactive', 'pending', 'rejected']),
       });
 
@@ -191,6 +192,7 @@ export default{
       await prisma.enterprises.update({
         where:{id},
         data:{
+          inactiveReason: inactiveReason || oldEnterprise.inactiveReason,
           status: status || oldEnterprise.status,
         }
       })

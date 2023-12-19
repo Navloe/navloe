@@ -8,6 +8,7 @@ import auth from "./controller/auth.mjs";
 import report from "./controller/report.mjs";
 // import landingPage from "./controller/landingPage.mjs";
 import publicCategories from "./controller/categories.mjs";
+import publicCatalogs from "./controller/catalogs.mjs";
 
 import userEnterprises from "./controller/user/enterprises.mjs";
 import catalogs from "./controller/user/catalogs.mjs";
@@ -36,6 +37,7 @@ router.post('/auth/register', auth.register);
 router.get('/auth/whoami', auth.whoami);
 
 router.get('/categories', publicCategories.get);
+router.get('/catalogs', publicCatalogs.getCatalogs);
 // router.get('/', landingPage.getLandingPage);
 
 // USER AREA

@@ -107,7 +107,6 @@ export default {
     try{
       const schema = yup.object({
         name: yup.string().required(),
-        imageUrl: yup.string().required(),
         type: yup.string().required().oneOf(['product', 'service'])
       });
 
